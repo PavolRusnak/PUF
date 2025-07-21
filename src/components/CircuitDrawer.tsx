@@ -82,23 +82,29 @@ export default function CircuitDrawer({
             value={id}
             onChange={e => setId(e.target.value)}
           />
-          <input
-            required
-            type="number"
-            className="w-full border rounded p-2"
-            placeholder="e.g., 40"
-            value={breaker}
-            min={1}
-            onChange={e => setBreaker(e.target.value)}
-          />
-          <input
-            type="number"
-            className="w-full border rounded p-2"
-            placeholder="e.g., 32"
-            value={continuous}
-            min={1}
-            onChange={e => setContinuous(e.target.value)}
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Breaker Size (A)</label>
+            <input
+              required
+              type="number"
+              className="w-full border rounded p-2"
+              placeholder="e.g., 40"
+              value={breaker}
+              min={1}
+              onChange={e => setBreaker(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Continuous Current (A) - Auto-calculated</label>
+            <input
+              type="number"
+              className="w-full border rounded p-2 bg-gray-50 cursor-not-allowed"
+              placeholder="e.g., 32"
+              value={continuous}
+              min={1}
+              readOnly
+            />
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Stations</label>
             <StationSelector

@@ -22,7 +22,7 @@ export default function OptionalStep() {
   const steps = [
     { id: "panels", title: "Panel & Circuits", description: "Configuration", completed: true, current: false },
     { id: "optional", title: "Optional", description: "Stalls & Images", completed: false, current: true },
-    { id: "finish", title: "Finish", description: "Submit", completed: false, current: false },
+    { id: "finish", title: "Contact", description: "Submit", completed: false, current: false },
   ];
 
   const updateStation = (stationId: string, updates: Partial<Station>) => {
@@ -67,84 +67,96 @@ export default function OptionalStep() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="bg-gradient-to-r from-hc-dark-blue to-hc-navy text-white px-4 py-3">
-        <h1 className="text-xl font-bold text-center">Hypercharge Power-Up Form</h1>
-      </div>
-      <StepNavigation steps={steps} />
-      
-      <div className="flex-1 p-4">
-        <div className="mb-6">
-          <h2 className="text-xl font-bold text-hc-dark-blue mb-2">Optional Configuration</h2>
-          <p className="text-hc-grey">Add stalls and images for each station (optional)</p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="fixed top-0 left-0 right-0 z-20 bg-gradient-to-r from-hc-dark-blue to-hc-navy text-white px-4 py-4">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-hc-orange rounded-lg flex items-center justify-center">
+            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div>
+            <h1 className="text-lg font-semibold">{state.site?.name}</h1>
+            <p className="text-xs text-hc-beige">{state.site?.address}</p>
+          </div>
         </div>
+      </div>
+      <div className="fixed top-16 left-0 right-0 z-10">
+        <StepNavigation steps={steps} />
+      </div>
+      
+      <div className="pt-32 pb-20 p-4">
+        <div className="space-y-6 flex-1 overflow-y-auto">
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-hc-dark-blue mb-2">Optional Configuration</h2>
+            <p className="text-hc-grey">Add stalls and images for each station (optional)</p>
+          </div>
 
-        <div className="space-y-4">
-          {stations.map((station) => (
-            <div key={station.id} className="bg-white border border-hc-light-blue rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-3">
-                  <span className={`h-3 w-3 rounded-full ${station.online ? "bg-green-500" : "bg-hc-grey"}`}></span>
-                  <span className="font-semibold text-hc-dark-blue">{station.id}</span>
+          <div className="space-y-3">
+            {stations.map((station) => (
+              <div key={station.id} className="bg-white border border-hc-light-blue rounded-lg p-3">
+                              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
+                  <span className={`h-2 w-2 rounded-full ${station.online ? "bg-green-500" : "bg-hc-grey"}`}></span>
+                  <span className="font-semibold text-hc-dark-blue text-sm">{station.id}</span>
                 </div>
-                <span className="text-xs text-hc-grey">
-                  {station.online ? "Online" : "Offline"}
-                </span>
-              </div>
-
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-hc-dark-blue mb-1">
-                    Stall (Optional)
-                  </label>
+                
+                <div className="flex-1">
                   <input
                     type="text"
-                    placeholder="e.g., S1, A1, Stall 1, etc."
+                    placeholder="Stall"
                     value={station.stall || ""}
                     onChange={(e) => updateStation(station.id, { stall: e.target.value || undefined })}
-                    className="w-full border border-hc-light-blue rounded p-2 text-hc-grey focus:ring-2 focus:ring-hc-orange focus:border-transparent"
+                    className="w-full border border-hc-light-blue rounded p-1.5 text-xs text-hc-grey focus:ring-1 focus:ring-hc-orange focus:border-transparent"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-hc-dark-blue mb-1">
-                    Images (Optional)
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-hc-grey whitespace-nowrap">Image</span>
+                  <label className="w-8 h-8 bg-hc-orange hover:bg-hc-orange/90 text-white rounded flex items-center justify-center cursor-pointer transition-all">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(station.id, e)}
+                      className="hidden"
+                    />
                   </label>
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={(e) => handleImageUpload(station.id, e)}
-                    className="w-full border border-hc-light-blue rounded p-2"
-                  />
-                  {station.images && station.images.length > 0 && (
-                    <div className="mt-2 grid grid-cols-2 gap-2">
-                      {station.images.map((image, index) => (
-                        <div key={index} className="relative">
-                          <Image
-                            src={image}
-                            alt={`Station ${station.id} image ${index + 1}`}
-                            width={200}
-                            height={96}
-                            className="w-full h-24 object-cover rounded"
-                          />
-                          <button
-                            onClick={() => removeImage(station.id, index)}
-                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </div>
-            </div>
-          ))}
+                
+                {station.images && station.images.length > 0 && (
+                  <div className="mt-2 grid grid-cols-3 gap-1">
+                    {station.images.map((image, index) => (
+                      <div key={index} className="relative">
+                        <Image
+                          src={image}
+                          alt={`Station ${station.id} image ${index + 1}`}
+                          width={100}
+                          height={48}
+                          className="w-full h-12 object-cover rounded"
+                        />
+                        <button
+                          onClick={() => removeImage(station.id, index)}
+                          className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-
-        <div className="flex gap-3 mt-6">
+      </div>
+      
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+        <div className="flex gap-3">
           <button
             onClick={() => router.push("/power-up/site")}
             className="flex-1 bg-hc-beige text-hc-grey py-3 rounded-lg font-semibold hover:bg-hc-beige/80 transition-all"

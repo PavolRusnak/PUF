@@ -16,7 +16,7 @@ export default function StationEntry() {
   const steps = [
     { id: "panels", title: "Panel & Circuits", description: "Configuration", completed: false, current: true },
     { id: "optional", title: "Optional", description: "Stalls & Images", completed: false, current: false },
-    { id: "finish", title: "Finish", description: "Submit", completed: false, current: false },
+    { id: "finish", title: "Contact", description: "Submit", completed: false, current: false },
   ];
 
   async function handleSubmit(e: React.FormEvent) {

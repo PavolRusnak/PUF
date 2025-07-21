@@ -15,9 +15,9 @@ export default function StepNavigation({ steps, onStepClick }: StepNavigationPro
   return (
     <div className="bg-white border-b border-gray-200">
       <div className="px-4 py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between max-w-2xl mx-auto">
           {steps.map((step, index) => (
-            <div key={step.id} className="flex items-center">
+              <div key={step.id} className="flex items-center justify-center">
               <div 
                 className={`flex flex-col items-center cursor-pointer ${
                   onStepClick ? 'hover:opacity-80' : ''
@@ -54,7 +54,7 @@ export default function StepNavigation({ steps, onStepClick }: StepNavigationPro
                 </div>
               </div>
               {index < steps.length - 1 && (
-                <div className={`w-8 h-0.5 mx-2 ${
+                <div className={`w-12 h-0.5 mx-4 ${
                   step.completed ? 'bg-hc-orange' : 'bg-hc-beige'
                 }`} />
               )}
