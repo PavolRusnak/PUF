@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 import { Station } from "@/lib/PowerUpContext";
 
 export default function StationEditor({
@@ -73,9 +74,11 @@ export default function StationEditor({
           <div className="mt-2 grid grid-cols-2 gap-2">
             {images.map((image, index) => (
               <div key={index} className="relative">
-                <img
+                <Image
                   src={image}
                   alt={`Station ${station.id} image ${index + 1}`}
+                  width={200}
+                  height={96}
                   className="w-full h-24 object-cover rounded"
                 />
                 <button
