@@ -78,98 +78,100 @@ export default function SiteSummary() {
         </div>
         
         <div className="space-y-6">
-        {panels.length === 0 && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <p className="text-gray-500 text-lg font-medium">No panels configured yet</p>
-            <p className="text-gray-400 text-sm mt-1">Add your first panel to get started</p>
-          </div>
-        )}
-        
-        {panels.map((p, pi) => (
-          <div key={p.id} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-            <div className="flex justify-between items-center mb-4">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">Panel: {p.id || "Unnamed Panel"}</h3>
-                <p className="text-sm text-gray-500">{p.location || "No location specified"}</p>
+          {panels.length === 0 && (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                </svg>
               </div>
+              <p className="text-gray-500 text-lg font-medium">No panels configured yet</p>
+              <p className="text-gray-400 text-sm mt-1">Add your first panel to get started</p>
+            </div>
+          )}
+          
+          {panels.map((p, pi) => (
+            <div key={p.id} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Panel: {p.id || "Unnamed Panel"}</h3>
+                  <p className="text-sm text-gray-500">{p.location || "No location specified"}</p>
+                </div>
+                <button 
+                  className="text-hypercharge-orange hover:text-hypercharge-orange-light font-medium text-sm"
+                  onClick={() => handleEditPanel(pi)}
+                >
+                  Edit
+                </button>
+              </div>
+              
+              {p.circuits.map((c, ci) => (
+                <div key={c.id} className="ml-4 mb-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-medium text-gray-900">Circuit: {c.id || "Unnamed Circuit"}</h4>
+                    <button 
+                      className="text-hypercharge-orange hover:text-hypercharge-orange-light font-medium text-sm"
+                      onClick={() => handleEditCircuit(pi, ci)}
+                    >
+                      Edit
+                    </button>
+                  </div>
+                  <div className="text-sm text-gray-600 mb-3">
+                    Breaker: {c.breaker}A, Continuous: {c.continuous}A
+                  </div>
+                  {c.stations.map((s) => (
+                    <div key={s.id} className="mb-3">
+                      <StationEditor
+                        station={s}
+                        onUpdate={(updatedStation) => {
+                          const newPanels = [...panels];
+                          const panel = { ...newPanels[pi] };
+                          const circuits = [...panel.circuits];
+                          const circuit = { ...circuits[ci] };
+                          const stations = [...circuit.stations];
+                          const stationIndex = stations.findIndex(st => st.id === s.id);
+                          if (stationIndex !== -1) {
+                            stations[stationIndex] = updatedStation;
+                            circuit.stations = stations;
+                            circuits[ci] = circuit;
+                            panel.circuits = circuits;
+                            newPanels[pi] = panel;
+                            dispatch({ type: "setPanels", panels: newPanels });
+                          }
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
+              
               <button 
-                className="text-hypercharge-orange hover:text-hypercharge-orange-light font-medium text-sm"
-                onClick={() => handleEditPanel(pi)}
+                className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all"
+                onClick={() => handleAddCircuit(pi)}
               >
-                Edit
+                Add Circuit
               </button>
             </div>
-            
-            {p.circuits.map((c, ci) => (
-              <div key={c.id} className="ml-4 mb-4 p-4 bg-gray-50 rounded-lg">
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="font-medium text-gray-900">Circuit: {c.id || "Unnamed Circuit"}</h4>
-                  <button 
-                    className="text-hypercharge-orange hover:text-hypercharge-orange-light font-medium text-sm"
-                    onClick={() => handleEditCircuit(pi, ci)}
-                  >
-                    Edit
-                  </button>
-                </div>
-                <div className="text-sm text-gray-600 mb-3">
-                  Breaker: {c.breaker}A, Continuous: {c.continuous}A
-                </div>
-                {c.stations.map((s) => (
-                  <div key={s.id} className="mb-3">
-                    <StationEditor
-                      station={s}
-                      onUpdate={(updatedStation) => {
-                        const newPanels = [...panels];
-                        const panel = { ...newPanels[pi] };
-                        const circuits = [...panel.circuits];
-                        const circuit = { ...circuits[ci] };
-                        const stations = [...circuit.stations];
-                        const stationIndex = stations.findIndex(st => st.id === s.id);
-                        if (stationIndex !== -1) {
-                          stations[stationIndex] = updatedStation;
-                          circuit.stations = stations;
-                          circuits[ci] = circuit;
-                          panel.circuits = circuits;
-                          newPanels[pi] = panel;
-                          dispatch({ type: "setPanels", panels: newPanels });
-                        }
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
-            
+          ))}
+          
+          <div className="space-y-4">
             <button 
-              className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all"
-              onClick={() => handleAddCircuit(pi)}
+              className="w-full bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
+              onClick={handleAddPanel}
             >
-              Add Circuit
+              Add Panel
+            </button>
+            
+            <button
+              className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
+              onClick={() => router.push("/power-up/finish")}
+            >
+              Finish Site Setup
             </button>
           </div>
-        ))}
-        
-        <div className="space-y-4">
-          <button 
-            className="w-full bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
-            onClick={handleAddPanel}
-          >
-            Add Panel
-          </button>
-          
-          <button
-            className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
-            onClick={() => router.push("/power-up/finish")}
-          >
-            Finish Site Setup
-          </button>
         </div>
       </div>
+      
       <PanelDrawer
         open={panelDrawerOpen}
         onClose={() => setPanelDrawerOpen(false)}

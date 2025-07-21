@@ -27,7 +27,7 @@ export default function StationEntry() {
       const hasAssigned = site.panels.some((p) => p.circuits.some((c) => c.stations.length));
       dispatch({ type: "init", payload: { site, mode: hasAssigned ? "UPDATE" : "NEW" } });
       router.push("/power-up/site");
-    } catch (err) {
+    } catch {
       setError("Failed to fetch site data");
     } finally {
       setLoading(false);
