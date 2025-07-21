@@ -5,6 +5,7 @@ import { useState } from "react";
 import PanelDrawer from "@/components/PanelDrawer";
 import CircuitDrawer from "@/components/CircuitDrawer";
 import StationEditor from "@/components/StationEditor";
+import StepNavigation from "@/components/StepNavigation";
 
 export default function SiteSummary() {
   const [state, dispatch] = usePowerUp();
@@ -16,6 +17,12 @@ export default function SiteSummary() {
 
   if (!state.site) return null;
   const { name, address, panels } = state.site;
+
+  const steps = [
+    { id: "station", title: "Station", description: "Enter ID", completed: true, current: false },
+    { id: "site", title: "Site", description: "Configure", completed: false, current: true },
+    { id: "finish", title: "Finish", description: "Submit", completed: false, current: false },
+  ];
 
   function handleAddPanel() {
     setEditingPanelIdx(null);
@@ -61,31 +68,59 @@ export default function SiteSummary() {
   }
 
   return (
-    <div className="bg-white rounded shadow">
-      <header className="bg-brand text-white p-3 rounded-t text-sm font-semibold">
-        {name} — {address}
-      </header>
-      <div className="p-4 space-y-4">
+    <div className="min-h-screen flex flex-col">
+      <StepNavigation steps={steps} />
+      
+      <div className="flex-1 p-6">
+        <div className="bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white rounded-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold mb-2">{name}</h1>
+          <p className="text-hypercharge-orange-light">{address}</p>
+        </div>
+        
+        <div className="space-y-6">
         {panels.length === 0 && (
-          <p className="text-gray-600 text-sm">No panels configured yet.</p>
-        )}
-        {panels.map((p, pi) => (
-          <div key={p.id} className="border rounded p-3 space-y-2">
-            <div className="flex justify-between items-center">
-              <div className="font-semibold">Panel: {p.id} <span className="text-xs text-gray-500 ml-3">{p.location}</span></div>
-              <button className="text-xs text-brand underline" onClick={() => handleEditPanel(pi)}>Edit</button>
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+              </svg>
             </div>
+            <p className="text-gray-500 text-lg font-medium">No panels configured yet</p>
+            <p className="text-gray-400 text-sm mt-1">Add your first panel to get started</p>
+          </div>
+        )}
+        
+        {panels.map((p, pi) => (
+          <div key={p.id} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Panel: {p.id || "Unnamed Panel"}</h3>
+                <p className="text-sm text-gray-500">{p.location || "No location specified"}</p>
+              </div>
+              <button 
+                className="text-hypercharge-orange hover:text-hypercharge-orange-light font-medium text-sm"
+                onClick={() => handleEditPanel(pi)}
+              >
+                Edit
+              </button>
+            </div>
+            
             {p.circuits.map((c, ci) => (
-              <div key={c.id} className="ml-4">
-                <div className="flex justify-between items-center">
-                  <div className="font-medium">Circuit: {c.id}</div>
-                  <button className="text-xs text-brand underline" onClick={() => handleEditCircuit(pi, ci)}>Edit</button>
+              <div key={c.id} className="ml-4 mb-4 p-4 bg-gray-50 rounded-lg">
+                <div className="flex justify-between items-center mb-2">
+                  <h4 className="font-medium text-gray-900">Circuit: {c.id || "Unnamed Circuit"}</h4>
+                  <button 
+                    className="text-hypercharge-orange hover:text-hypercharge-orange-light font-medium text-sm"
+                    onClick={() => handleEditCircuit(pi, ci)}
+                  >
+                    Edit
+                  </button>
                 </div>
-                <div className="text-xs text-gray-500 mb-1">
+                <div className="text-sm text-gray-600 mb-3">
                   Breaker: {c.breaker}A, Continuous: {c.continuous}A
                 </div>
                 {c.stations.map((s) => (
-                  <div key={s.id} className="ml-4">
+                  <div key={s.id} className="mb-3">
                     <StationEditor
                       station={s}
                       onUpdate={(updatedStation) => {
@@ -109,16 +144,31 @@ export default function SiteSummary() {
                 ))}
               </div>
             ))}
-            <button className="mt-2 text-xs bg-brand text-white px-2 py-1 rounded" onClick={() => handleAddCircuit(pi)}>Add Circuit</button>
+            
+            <button 
+              className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all"
+              onClick={() => handleAddCircuit(pi)}
+            >
+              Add Circuit
+            </button>
           </div>
         ))}
-        <button className="w-full bg-brand text-white py-2 rounded" onClick={handleAddPanel}>Add Panel</button>
-        <button
-          className="w-full bg-brand text-white py-2 rounded"
-          onClick={() => router.push("/power-up/finish")}
-        >
-          Finish Site Setup
-        </button>
+        
+        <div className="space-y-4">
+          <button 
+            className="w-full bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
+            onClick={handleAddPanel}
+          >
+            Add Panel
+          </button>
+          
+          <button
+            className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
+            onClick={() => router.push("/power-up/finish")}
+          >
+            Finish Site Setup
+          </button>
+        </div>
       </div>
       <PanelDrawer
         open={panelDrawerOpen}

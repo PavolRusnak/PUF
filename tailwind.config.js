@@ -7,8 +7,12 @@ module.exports = {
   theme: {
     extend: { 
       colors: { 
-        brand: "#004c97",
-        "brand-dark": "#003d7a"
+        brand: "#FF6B35", // Hypercharge Orange
+        "brand-dark": "#E55A2B",
+        "hypercharge-blue": "#1E3A8A", // Dark Blue
+        "hypercharge-blue-light": "#3B82F6",
+        "hypercharge-orange": "#FF6B35",
+        "hypercharge-orange-light": "#FF8A65"
       } 
     },
   },
