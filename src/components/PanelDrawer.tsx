@@ -24,8 +24,8 @@ export default function PanelDrawer({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-30">
-      <div className="w-full max-w-md bg-white rounded-t-2xl shadow-lg p-6">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black bg-opacity-30">
+      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded shadow-lg p-6">
         <h2 className="text-lg font-semibold mb-4">{initialPanel ? "Edit Panel" : "Add Panel"}</h2>
         <form
           onSubmit={e => {

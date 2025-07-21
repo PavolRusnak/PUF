@@ -11,6 +11,7 @@ export default function StationSelector({
 }) {
   const [state] = usePowerUp();
   const [query, setQuery] = useState("");
+  const [focusedIndex, setFocusedIndex] = useState(-1);
 
   // Gather all stations from site (including unassigned)
   const allSiteStationIds = state.site?.stations || [];
@@ -39,6 +40,22 @@ export default function StationSelector({
     return allStations.filter(s => s.id.toLowerCase().includes(query.toLowerCase()));
   }, [allStations, query]);
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && filtered.length > 0) {
+      e.preventDefault();
+      const stationToSelect = focusedIndex >= 0 ? filtered[focusedIndex] : filtered[0];
+      onSelect(stationToSelect);
+      setQuery("");
+      setFocusedIndex(-1);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setFocusedIndex(prev => Math.min(prev + 1, filtered.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setFocusedIndex(prev => Math.max(prev - 1, -1));
+    }
+  };
+
   // Assignment status
   function getAssignmentStatus(station: Station) {
     if (selected.some(s => s.id === station.id)) return "Selected";
@@ -53,21 +70,27 @@ export default function StationSelector({
         placeholder="Search Station ID..."
         value={query}
         onChange={e => setQuery(e.target.value)}
-        className="w-full mb-2 px-3 py-2 border rounded"
+        onKeyDown={handleKeyDown}
+        className="w-full mb-2 px-3 py-2 border rounded focus:ring-2 focus:ring-hc-orange focus:border-transparent"
       />
       <div className="border rounded divide-y bg-white max-h-48 overflow-y-auto">
         {filtered.length === 0 && (
           <div className="py-4 px-4 text-gray-400 text-center">No stations found</div>
         )}
-        {filtered.map(station => {
+        {filtered.map((station, index) => {
           const status = getAssignmentStatus(station);
+          const isFocused = index === focusedIndex;
           return (
             <div
               key={station.id}
               className={`flex items-center justify-between py-2 px-4 cursor-pointer hover:bg-gray-100 ${
                 status === "Selected" ? "bg-blue-50 font-semibold" : ""
-              }`}
-              onClick={() => onSelect(station)}
+              } ${isFocused ? "bg-hc-orange/10 border-l-2 border-hc-orange" : ""}`}
+              onClick={() => {
+                onSelect(station);
+                setQuery("");
+                setFocusedIndex(-1);
+              }}
             >
               <span className="font-mono">{station.id}</span>
               <span className={`ml-2 text-xs px-2 py-1 rounded ${

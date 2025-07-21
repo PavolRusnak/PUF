@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Station } from "@/lib/PowerUpContext";
+import { Station, usePowerUp } from "@/lib/PowerUpContext";
 import StationSelector from "./StationSelector";
 
 export default function CircuitDrawer({
@@ -13,25 +13,29 @@ export default function CircuitDrawer({
   onSave: (circuit: { id: string; breaker: number; continuous: number; stations: Station[] }) => void;
   initialCircuit?: { id: string; breaker: number; continuous: number; stations: Station[] };
 }) {
+  const [state] = usePowerUp();
   const [id, setId] = useState(initialCircuit?.id || "");
-  const [breaker, setBreaker] = useState(initialCircuit?.breaker || 40);
-  const [continuous, setContinuous] = useState(initialCircuit?.continuous || 32);
+  const [breaker, setBreaker] = useState("");
+  const [continuous, setContinuous] = useState("");
   const [stations, setStations] = useState<Station[]>(initialCircuit?.stations || []);
 
   useEffect(() => {
-    setContinuous(Math.floor(breaker * 0.8));
+    if (breaker && !isNaN(Number(breaker)) && Number(breaker) > 0) {
+      const continuousValue = Math.floor(Number(breaker) * 0.8);
+      setContinuous(continuousValue.toString());
+    }
   }, [breaker]);
 
   useEffect(() => {
     if (open && initialCircuit) {
       setId(initialCircuit.id);
-      setBreaker(initialCircuit.breaker);
-      setContinuous(initialCircuit.continuous);
+      setBreaker(initialCircuit.breaker.toString());
+      setContinuous(initialCircuit.continuous.toString());
       setStations(initialCircuit.stations);
     } else if (open) {
       setId("");
-      setBreaker(40);
-      setContinuous(32);
+      setBreaker("");
+      setContinuous("");
       setStations([]);
     }
   }, [open, initialCircuit]);
@@ -42,18 +46,32 @@ export default function CircuitDrawer({
     if (stations.some(s => s.id === station.id)) {
       setStations(stations.filter(s => s.id !== station.id));
     } else {
+      // Check if station is already assigned to any circuit
+      const isAlreadyAssigned = state.site?.panels.some(panel =>
+        panel.circuits.some(circuit =>
+          circuit.stations.some(s => s.id === station.id)
+        )
+      );
+      
+      if (isAlreadyAssigned) {
+        alert(`Station ${station.id} is already assigned to another circuit.`);
+        return;
+      }
+      
       setStations([...stations, station]);
     }
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-30">
-      <div className="w-full max-w-md bg-white rounded-t-2xl shadow-lg p-6">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black bg-opacity-30">
+      <div className="w-full max-w-md bg-white rounded-t-2xl sm:rounded shadow-lg p-6">
         <h2 className="text-lg font-semibold mb-4">{initialCircuit ? "Edit Circuit" : "Add Circuit"}</h2>
         <form
           onSubmit={e => {
             e.preventDefault();
-            onSave({ id, breaker, continuous, stations });
+            const breakerNum = typeof breaker === 'string' ? parseInt(breaker) || 0 : breaker;
+            const continuousNum = typeof continuous === 'string' ? parseInt(continuous) || 0 : continuous;
+            onSave({ id, breaker: breakerNum, continuous: continuousNum, stations });
           }}
           className="space-y-4"
         >
@@ -68,16 +86,18 @@ export default function CircuitDrawer({
             required
             type="number"
             className="w-full border rounded p-2"
-            placeholder="Breaker (A)"
+            placeholder="e.g., 40"
             value={breaker}
             min={1}
-            onChange={e => setBreaker(Number(e.target.value))}
+            onChange={e => setBreaker(e.target.value)}
           />
           <input
-            readOnly
-            className="w-full border rounded p-2 bg-gray-100"
-            placeholder="Continuous (A)"
+            type="number"
+            className="w-full border rounded p-2"
+            placeholder="e.g., 32"
             value={continuous}
+            min={1}
+            onChange={e => setContinuous(e.target.value)}
           />
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Stations</label>
