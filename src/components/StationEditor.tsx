@@ -1,104 +1,24 @@
-import { useState } from "react";
-import Image from "next/image";
 import { Station } from "@/lib/PowerUpContext";
 
 export default function StationEditor({
   station,
-  onUpdate,
 }: {
   station: Station;
-  onUpdate: (station: Station) => void;
 }) {
-  const [stall, setStall] = useState(station.stall || "");
-  const [images, setImages] = useState<string[]>(station.images || []);
-
-  const handleSave = () => {
-    onUpdate({
-      ...station,
-      stall: stall || undefined,
-      images: images.length > 0 ? images : undefined,
-    });
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const newImages: string[] = [];
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (e.target?.result) {
-            newImages.push(e.target.result as string);
-            if (newImages.length === files.length) {
-              setImages([...images, ...newImages]);
-            }
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
-  };
-
   return (
-    <div className="space-y-4 p-4 border rounded">
+    <div className="p-3 bg-white border border-gray-200 rounded-lg">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold">{station.id}</h3>
-        <span className={`h-2 w-2 rounded-full ${station.online ? "bg-green-500" : "bg-gray-400"}`}></span>
+        <div className="flex items-center space-x-3">
+          <span className={`h-3 w-3 rounded-full ${station.online ? "bg-green-500" : "bg-gray-400"}`}></span>
+          <span className="font-medium text-gray-900">{station.id}</span>
+          {station.stall && (
+            <span className="text-sm text-gray-500">({station.stall})</span>
+          )}
+        </div>
+        <div className="text-xs text-gray-400">
+          {station.online ? "Online" : "Offline"}
+        </div>
       </div>
-      
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Stall (Optional)</label>
-        <input
-          type="text"
-          placeholder="e.g., S1, A1, Stall 1, etc."
-          value={stall}
-          onChange={(e) => setStall(e.target.value)}
-          className="w-full border rounded p-2 text-gray-500"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Images (Optional)</label>
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="w-full border rounded p-2"
-        />
-        {images.length > 0 && (
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            {images.map((image, index) => (
-              <div key={index} className="relative">
-                <Image
-                  src={image}
-                  alt={`Station ${station.id} image ${index + 1}`}
-                  width={200}
-                  height={96}
-                  className="w-full h-24 object-cover rounded"
-                />
-                <button
-                  onClick={() => removeImage(index)}
-                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <button
-        onClick={handleSave}
-        className="w-full bg-brand text-white py-2 rounded hover:bg-brand-dark"
-      >
-        Save Changes
-      </button>
     </div>
   );
 } 

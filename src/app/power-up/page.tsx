@@ -13,8 +13,9 @@ export default function StationEntry() {
   const [, dispatch] = usePowerUp();
 
   const steps = [
-    { id: "station", title: "Station", description: "Enter ID", completed: false, current: true },
-    { id: "site", title: "Site", description: "Configure", completed: false, current: false },
+    { id: "start", title: "Start", description: "Station ID", completed: false, current: true },
+    { id: "panels", title: "Panel & Circuits", description: "Configuration", completed: false, current: false },
+    { id: "optional", title: "Optional", description: "Stalls & Images", completed: false, current: false },
     { id: "finish", title: "Finish", description: "Submit", completed: false, current: false },
   ];
 
@@ -36,16 +37,14 @@ export default function StationEntry() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <div className="bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white px-4 py-3">
+        <h1 className="text-xl font-bold text-center">Hypercharge Power-Up Form</h1>
+      </div>
       <StepNavigation steps={steps} />
       
       <div className="flex-1 p-6">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Enter Station ID</h1>
+        <div className="text-center mb-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-2">Enter Station ID</h2>
           <p className="text-gray-600">Enter the station ID to begin configuration</p>
         </div>
         

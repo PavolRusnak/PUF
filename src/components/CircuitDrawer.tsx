@@ -60,7 +60,7 @@ export default function CircuitDrawer({
           <input
             required
             className="w-full border rounded p-2"
-            placeholder="e.g., CIR-1"
+            placeholder="e.g., Circuit 1/3"
             value={id}
             onChange={e => setId(e.target.value)}
           />

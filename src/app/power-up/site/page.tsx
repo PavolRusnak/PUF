@@ -19,8 +19,9 @@ export default function SiteSummary() {
   const { name, address, panels } = state.site;
 
   const steps = [
-    { id: "station", title: "Station", description: "Enter ID", completed: true, current: false },
-    { id: "site", title: "Site", description: "Configure", completed: false, current: true },
+    { id: "start", title: "Start", description: "Station ID", completed: true, current: false },
+    { id: "panels", title: "Panel & Circuits", description: "Configuration", completed: false, current: true },
+    { id: "optional", title: "Optional", description: "Stalls & Images", completed: false, current: false },
     { id: "finish", title: "Finish", description: "Submit", completed: false, current: false },
   ];
 
@@ -69,15 +70,20 @@ export default function SiteSummary() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <div className="bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white px-4 py-3">
+        <h1 className="text-xl font-bold text-center">Hypercharge Power-Up Form</h1>
+      </div>
       <StepNavigation steps={steps} />
       
-      <div className="flex-1 p-6">
-        <div className="bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white rounded-lg p-6 mb-6">
-          <h1 className="text-2xl font-bold mb-2">{name}</h1>
-          <p className="text-hypercharge-orange-light">{address}</p>
+      <div className="flex-1 p-4">
+        <div className="flex items-center justify-between mb-4 p-3 bg-gray-50 rounded-lg">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">{name}</h2>
+            <p className="text-sm text-gray-600">{address}</p>
+          </div>
         </div>
         
-        <div className="space-y-6">
+        <div className="space-y-4">
           {panels.length === 0 && (
             <div className="text-center py-12">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -119,29 +125,11 @@ export default function SiteSummary() {
                   <div className="text-sm text-gray-600 mb-3">
                     Breaker: {c.breaker}A, Continuous: {c.continuous}A
                   </div>
-                  {c.stations.map((s) => (
-                    <div key={s.id} className="mb-3">
-                      <StationEditor
-                        station={s}
-                        onUpdate={(updatedStation) => {
-                          const newPanels = [...panels];
-                          const panel = { ...newPanels[pi] };
-                          const circuits = [...panel.circuits];
-                          const circuit = { ...circuits[ci] };
-                          const stations = [...circuit.stations];
-                          const stationIndex = stations.findIndex(st => st.id === s.id);
-                          if (stationIndex !== -1) {
-                            stations[stationIndex] = updatedStation;
-                            circuit.stations = stations;
-                            circuits[ci] = circuit;
-                            panel.circuits = circuits;
-                            newPanels[pi] = panel;
-                            dispatch({ type: "setPanels", panels: newPanels });
-                          }
-                        }}
-                      />
-                    </div>
-                  ))}
+                                  {c.stations.map((s) => (
+                  <div key={s.id} className="mb-2">
+                    <StationEditor station={s} />
+                  </div>
+                ))}
                 </div>
               ))}
               
