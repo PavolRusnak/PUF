@@ -2,7 +2,7 @@ import { Site } from "./PowerUpContext";
 
 export function fetchSite(stationId: string): Promise<Site> {
   // Check if station belongs to Hypercharge North Vancouver
-  const isHyperchargeNorthVan = ["2222", "2223", "222"].includes(stationId);
+  const isHyperchargeNorthVan = ["2222", "2223", "2224"].includes(stationId);
   
   if (isHyperchargeNorthVan) {
     // Hypercharge North Vancouver site
@@ -11,7 +11,7 @@ export function fetchSite(stationId: string): Promise<Site> {
       id: "SITE-HCNV",
       name: "Hypercharge North Vancouver",
       address: "456 Lonsdale Ave, North Vancouver, BC",
-      stations: ["2222", "2223", "222"],
+      stations: ["2222", "2223", "2224"],
       panels: hasAssigned
         ? [
             {
