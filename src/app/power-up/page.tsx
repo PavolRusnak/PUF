@@ -13,7 +13,7 @@ export default function StationEntry() {
   async function go(e: React.FormEvent) {
     e.preventDefault();
     try {
-      const site = await fetchSite(id || "HC-00001");
+      const site = await fetchSite(id || "1234");
       const hasAssigned = site.panels.some((p) => p.circuits.some((c) => c.stations.length));
       dispatch({ type: "init", payload: { site, mode: hasAssigned ? "UPDATE" : "NEW" } });
       router.push("/power-up/site");
@@ -29,7 +29,7 @@ export default function StationEntry() {
         <input
           required
           className="w-full border rounded p-2"
-          placeholder="Example: HC-00001"
+                      placeholder="Example: 1234"
           value={id}
           onChange={(e) => setId(e.target.value)}
         />

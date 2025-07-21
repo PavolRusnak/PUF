@@ -37,14 +37,14 @@ export default function PanelDrawer({
           <input
             required
             className="w-full border rounded p-2"
-            placeholder="Panel ID"
+            placeholder="e.g., EV Panel 1"
             value={id}
             onChange={e => setId(e.target.value)}
           />
           <input
             required
             className="w-full border rounded p-2"
-            placeholder="Location"
+            placeholder="e.g., Electrical Room on P1"
             value={location}
             onChange={e => setLocation(e.target.value)}
           />

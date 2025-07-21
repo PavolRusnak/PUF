@@ -51,18 +51,18 @@ export default function StationEditor({
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Stall</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Stall (Optional)</label>
         <input
           type="text"
-          placeholder="e.g., S1, A1, etc."
+          placeholder="e.g., S1, A1, Stall 1, etc."
           value={stall}
           onChange={(e) => setStall(e.target.value)}
-          className="w-full border rounded p-2"
+          className="w-full border rounded p-2 text-gray-500"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Images</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Images (Optional)</label>
         <input
           type="file"
           multiple

@@ -15,16 +15,16 @@ export function fetchSite(stationId: string): Promise<Site> {
       panels: hasAssigned
         ? [
             {
-              id: "EV Panel 1",
-              location: "Electrical Room on P1",
+              id: "",
+              location: "",
               circuits: [
                 {
-                  id: "CIR-1",
+                  id: "",
                   breaker: 40,
                   continuous: 32,
                   stations: [
-                    { id: "2222", stall: "S1", online: true },
-                    { id: "2223", stall: "S2", online: false },
+                    { id: "2222", online: true },
+                    { id: "2223", online: false },
                   ],
                 },
               ],
@@ -43,16 +43,16 @@ export function fetchSite(stationId: string): Promise<Site> {
       panels: hasAssigned
         ? [
             {
-              id: "EV Panel 1",
-              location: "Electrical Room on P1",
+              id: "",
+              location: "",
               circuits: [
                 {
-                  id: "CIR-1",
+                  id: "",
                   breaker: 40,
                   continuous: 32,
                   stations: [
-                    { id: "1234", stall: "S1", online: true },
-                    { id: "5678", stall: "S2", online: false },
+                    { id: "1234", online: true },
+                    { id: "5678", online: false },
                   ],
                 },
               ],
