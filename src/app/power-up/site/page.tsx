@@ -70,16 +70,16 @@ export default function SiteSummary() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white px-4 py-3">
+      <div className="bg-gradient-to-r from-hc-dark-blue to-hc-navy text-white px-4 py-3">
         <h1 className="text-xl font-bold text-center">Hypercharge Power-Up Form</h1>
       </div>
       <StepNavigation steps={steps} />
       
       <div className="flex-1 p-4">
-        <div className="flex items-center justify-between mb-4 p-3 bg-gray-50 rounded-lg">
+        <div className="flex items-center justify-between mb-4 p-3 bg-hc-beige rounded-lg border border-hc-light-blue">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">{name}</h2>
-            <p className="text-sm text-gray-600">{address}</p>
+            <h2 className="text-lg font-semibold text-hc-dark-blue">{name}</h2>
+            <p className="text-sm text-hc-grey">{address}</p>
           </div>
         </div>
         
@@ -103,24 +103,24 @@ export default function SiteSummary() {
                   <h3 className="text-lg font-semibold text-gray-900">Panel: {p.id || "Unnamed Panel"}</h3>
                   <p className="text-sm text-gray-500">{p.location || "No location specified"}</p>
                 </div>
-                <button 
-                  className="text-hypercharge-orange hover:text-hypercharge-orange-light font-medium text-sm"
-                  onClick={() => handleEditPanel(pi)}
-                >
-                  Edit
-                </button>
+                              <button 
+                className="text-hc-orange hover:text-hc-orange font-medium text-sm"
+                onClick={() => handleEditPanel(pi)}
+              >
+                Edit
+              </button>
               </div>
               
               {p.circuits.map((c, ci) => (
                 <div key={c.id} className="ml-4 mb-4 p-4 bg-gray-50 rounded-lg">
                   <div className="flex justify-between items-center mb-2">
                     <h4 className="font-medium text-gray-900">Circuit: {c.id || "Unnamed Circuit"}</h4>
-                    <button 
-                      className="text-hypercharge-orange hover:text-hypercharge-orange-light font-medium text-sm"
-                      onClick={() => handleEditCircuit(pi, ci)}
-                    >
-                      Edit
-                    </button>
+                                      <button 
+                    className="text-hc-orange hover:text-hc-orange font-medium text-sm"
+                    onClick={() => handleEditCircuit(pi, ci)}
+                  >
+                    Edit
+                  </button>
                   </div>
                   <div className="text-sm text-gray-600 mb-3">
                     Breaker: {c.breaker}A, Continuous: {c.continuous}A
@@ -133,29 +133,29 @@ export default function SiteSummary() {
                 </div>
               ))}
               
-              <button 
-                className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-all"
-                onClick={() => handleAddCircuit(pi)}
-              >
-                Add Circuit
-              </button>
+                          <button 
+              className="w-full bg-hc-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-hc-orange/90 transition-all"
+              onClick={() => handleAddCircuit(pi)}
+            >
+              Add Circuit
+            </button>
             </div>
           ))}
           
           <div className="space-y-4">
-            <button 
-              className="w-full bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
-              onClick={handleAddPanel}
-            >
-              Add Panel
-            </button>
-            
-            <button
-              className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
-              onClick={() => router.push("/power-up/finish")}
-            >
-              Finish Site Setup
-            </button>
+                      <button 
+            className="w-full bg-hc-navy text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-hc-navy/90 transition-all"
+            onClick={handleAddPanel}
+          >
+            Add Panel
+          </button>
+          
+          <button
+            className="w-full bg-hc-orange text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-hc-orange/90 transition-all"
+            onClick={() => router.push("/power-up/finish")}
+          >
+            Finish Site Setup
+          </button>
           </div>
         </div>
       </div>

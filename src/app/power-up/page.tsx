@@ -37,7 +37,7 @@ export default function StationEntry() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="bg-gradient-to-r from-hypercharge-blue to-hypercharge-blue-light text-white px-4 py-3">
+      <div className="bg-gradient-to-r from-hc-dark-blue to-hc-navy text-white px-4 py-3">
         <h1 className="text-xl font-bold text-center">Hypercharge Power-Up Form</h1>
       </div>
       <StepNavigation steps={steps} />
@@ -58,7 +58,7 @@ export default function StationEntry() {
                 id="stationId"
                 type="text"
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg focus:ring-2 focus:ring-hypercharge-orange focus:border-transparent transition-all"
+                className="w-full border border-hc-light-blue rounded-lg px-4 py-3 text-lg focus:ring-2 focus:ring-hc-orange focus:border-transparent transition-all"
                 placeholder="Example: 1234"
                 value={id}
                 onChange={(e) => setId(e.target.value)}
@@ -85,7 +85,7 @@ export default function StationEntry() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-hypercharge-orange to-hypercharge-orange-light text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-hc-orange text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-hc-orange/90 transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <div className="flex items-center justify-center">

@@ -7,12 +7,25 @@ module.exports = {
   theme: {
     extend: { 
       colors: { 
-        brand: "#FF6B35", // Hypercharge Orange
-        "brand-dark": "#E55A2B",
-        "hypercharge-blue": "#1E3A8A", // Dark Blue
-        "hypercharge-blue-light": "#3B82F6",
-        "hypercharge-orange": "#FF6B35",
-        "hypercharge-orange-light": "#FF8A65"
+        // Primary Colors
+        "hc-dark-blue": "#0A1C2B", // Dark Jungle
+        "hc-orange": "#F04D25", // Flame
+        
+        // Secondary Colors
+        "hc-navy": "#1B2E58", // Space Cadet
+        "hc-beige": "#EEEEEC", // Bright Grey
+        "hc-light-blue": "#849AB4", // Weldon Blue
+        
+        // Tertiary Colors
+        "hc-grey": "#6D6E71", // Dark Silver
+        
+        // Legacy brand colors for compatibility
+        brand: "#F04D25", // HC Orange
+        "brand-dark": "#0A1C2B", // HC Dark Blue
+        "hypercharge-blue": "#0A1C2B", // HC Dark Blue
+        "hypercharge-blue-light": "#1B2E58", // HC Navy
+        "hypercharge-orange": "#F04D25", // HC Orange
+        "hypercharge-orange-light": "#F04D25", // HC Orange
       } 
     },
   },

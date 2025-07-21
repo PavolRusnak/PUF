@@ -27,10 +27,10 @@ export default function StepNavigation({ steps, onStepClick }: StepNavigationPro
                 <div className={`
                   w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold
                   ${step.completed 
-                    ? 'bg-hypercharge-orange text-white' 
+                    ? 'bg-hc-orange text-white' 
                     : step.current 
-                    ? 'bg-hypercharge-blue text-white border-2 border-hypercharge-orange' 
-                    : 'bg-gray-200 text-gray-500'
+                    ? 'bg-hc-dark-blue text-white border-2 border-hc-orange' 
+                    : 'bg-hc-beige text-hc-grey'
                   }
                 `}>
                   {step.completed ? (
@@ -43,8 +43,8 @@ export default function StepNavigation({ steps, onStepClick }: StepNavigationPro
                 </div>
                 <div className="mt-2 text-center">
                   <div className={`text-xs font-medium ${
-                    step.current ? 'text-hypercharge-blue' : 
-                    step.completed ? 'text-hypercharge-orange' : 'text-gray-500'
+                    step.current ? 'text-hc-dark-blue' : 
+                    step.completed ? 'text-hc-orange' : 'text-hc-grey'
                   }`}>
                     {step.title}
                   </div>
@@ -55,7 +55,7 @@ export default function StepNavigation({ steps, onStepClick }: StepNavigationPro
               </div>
               {index < steps.length - 1 && (
                 <div className={`w-8 h-0.5 mx-2 ${
-                  step.completed ? 'bg-hypercharge-orange' : 'bg-gray-200'
+                  step.completed ? 'bg-hc-orange' : 'bg-hc-beige'
                 }`} />
               )}
             </div>

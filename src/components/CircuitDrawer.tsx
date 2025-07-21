@@ -87,8 +87,8 @@ export default function CircuitDrawer({
             />
           </div>
           <div className="flex gap-2 mt-4">
-            <button type="button" onClick={onClose} className="flex-1 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Cancel</button>
-            <button type="submit" className="flex-1 py-2 rounded bg-brand text-white hover:bg-brand-dark">Save</button>
+            <button type="button" onClick={onClose} className="flex-1 py-2 rounded bg-hc-beige text-hc-grey hover:bg-hc-beige/80">Cancel</button>
+            <button type="submit" className="flex-1 py-2 rounded bg-hc-orange text-white hover:bg-hc-orange/90">Save</button>
           </div>
         </form>
       </div>
