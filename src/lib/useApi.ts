@@ -6,7 +6,7 @@ export async function apiFetch(url: string) {
       name: "Demo Mall",
       address: "123 Main St, Vancouver",
       panels: [],
-      stations: ["1234", "5678"],
+      stations: ["1234", "5678", "9012"],
     };
   }
   // POST /power-up success
