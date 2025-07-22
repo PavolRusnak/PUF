@@ -85,7 +85,7 @@ export default function OptionalStep() {
         <StepNavigation steps={steps} />
       </div>
       
-      <div className="pt-32 pb-20 p-4">
+      <div className="pt-48 pb-20 p-4">
         <div className="space-y-6 flex-1 overflow-y-auto">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-hc-dark-blue mb-2">Optional Configuration</h2>

@@ -113,8 +113,8 @@ export default function SiteSummary() {
         <StepNavigation steps={steps} />
       </div>
       
-      <div className="pt-32 pb-20 p-4">
-        <div className="space-y-6">
+      <div className="pt-48 pb-20 p-4">
+        <div className="space-y-6 overflow-y-auto max-h-[calc(100vh-280px)]">
           {panels.length === 0 && (
             <button 
               onClick={handleAddPanel}
@@ -190,23 +190,35 @@ export default function SiteSummary() {
             </div>
           ))}
           
-          <button 
-            className="w-full bg-hc-navy text-white py-3 rounded-lg font-semibold shadow-lg hover:bg-hc-navy/90 transition-all"
-            onClick={handleAddPanel}
-          >
-            Add Additional Panel
-          </button>
+          {panels.length > 0 && (
+            <button 
+              className="w-full bg-hc-navy text-white py-3 rounded-lg font-semibold shadow-lg hover:bg-hc-navy/90 transition-all"
+              onClick={handleAddPanel}
+            >
+              Add Additional Panel
+            </button>
+          )}
         </div>
       </div>
       
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
-        <button
-          className="w-full bg-hc-orange text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-hc-orange/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          onClick={handleContinueToOptional}
-          disabled={loading}
-        >
-          Next
-        </button>
+        <div className="flex gap-3">
+          <button
+            className="w-12 bg-hc-grey text-white rounded-lg font-semibold shadow-lg hover:bg-hc-grey/90 transition-all flex items-center justify-center py-4"
+            onClick={() => router.push("/power-up")}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <button
+            className="flex-1 bg-hc-orange text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:bg-hc-orange/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleContinueToOptional}
+            disabled={loading}
+          >
+            Next
+          </button>
+        </div>
       </div>
       
       <PanelDrawer
